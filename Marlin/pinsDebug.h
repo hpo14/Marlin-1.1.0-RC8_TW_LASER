@@ -22,6 +22,10 @@
 
 bool endstop_monitor_flag = false;
 
+#if !defined(TIMER1B)    // working with Teensyduino extension so need to re-define some things
+  #include "pinsDebug_Teensyduino.h"
+#endif
+
 #define  NAME_FORMAT "%-28s"   // one place to specify the format of all the sources of names
                                // "-" left justify, "28" minimum width of name, pad with blanks
 
