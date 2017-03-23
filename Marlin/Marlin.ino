@@ -1,4 +1,4 @@
-/**XX Marlin 1.1.0-RC8 v001 (1051206)
+/**XX Marlin 1.1.0-RC8 "Woozy Wookiee" v003 (1051223)
  * Marlin 3D Printer Firmware
  * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
