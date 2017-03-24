@@ -867,7 +867,7 @@ void kill_screen(const char* lcd_msg) {
 
     static void _lcd_mesh_fine_tune(const char* msg) {
       static millis_t next_click = 0;
-      int16_t last_digit, movement;
+      int16_t last_digit;
       int32_t rounded;
 
       defer_return_to_status = true;
@@ -3700,10 +3700,11 @@ void lcd_reset_alert_level() { lcd_status_message_level = 0; }
 
 #if DISABLED(DOGLCD)
 void lcd_verr() {
-  lcd_print("Marlin v.1.1.0-RC8");
-  lcd_print("ver.001 (1051236)");
+  lcd_print("Marlin v.1.1.0-RCBuxFig");
+  lcd_print("ver 20170325");
   lcd_print(">Laser");
   lcd_print("XJ.Hsu _");
+  lcd_print("hpo14 _");
 }
 #endif
 

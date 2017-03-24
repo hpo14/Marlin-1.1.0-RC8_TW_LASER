@@ -542,7 +542,7 @@ void Planner::check_axes_activity() {
   #endif
 }
 
-#if PLANNER_LEVELING
+#if PLANNER_LEVELING && DISABLED(AUTO_BED_LEVELING_UBL)
   /**
    * lx, ly, lz - logical (cartesian, not delta) positions in mm
    */
@@ -646,7 +646,7 @@ void Planner::check_axes_activity() {
     #endif
   }
 
-#endif // PLANNER_LEVELING
+#endif // PLANNER_LEVELING && !AUTO_BED_LEVELING_UBL
 
 /**
  * Planner::_buffer_line
@@ -1424,7 +1424,7 @@ void Planner::_set_position_mm(const float &a, const float &b, const float &c, c
 }
 
 void Planner::set_position_mm_kinematic(const float position[NUM_AXIS]) {
-  #if PLANNER_LEVELING
+  #if PLANNER_LEVELING && DISABLED(AUTO_BED_LEVELING_UBL)
     float lpos[XYZ] = { position[X_AXIS], position[Y_AXIS], position[Z_AXIS] };
     apply_leveling(lpos);
   #else
@@ -1501,17 +1501,6 @@ void Planner::refresh_positioning() {
     if (autotemp_enabled) autotemp_factor = code_value_temp_diff();
     if (code_seen('S')) autotemp_min = code_value_temp_abs();
     if (code_seen('B')) autotemp_max = code_value_temp_abs();
-  }
-
-#endif
-
-#if ENABLED(LIN_ADVANCE)
-
-  void Planner::advance_M905(const float &k) {
-    if (k >= 0.0) extruder_advance_k = k;
-    SERIAL_ECHO_START;
-    SERIAL_ECHOPAIR("Advance factor: ", extruder_advance_k);
-    SERIAL_EOL;
   }
 
 #endif

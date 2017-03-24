@@ -687,7 +687,9 @@ static bool pwm_status(uint8_t pin) {
     #if defined(TCCR1A) && defined(COM1A1)
       PWM_CASE(1,A);
       PWM_CASE(1,B);
-      PWM_CASE(1,C);
+      #if defined(COM1C1) && defined(TIMER1C)
+        PWM_CASE(1,C);
+      #endif
     #endif
 
     #if defined(TCCR2A) && defined(COM2A1)
@@ -698,7 +700,9 @@ static bool pwm_status(uint8_t pin) {
     #if defined(TCCR3A) && defined(COM3A1)
       PWM_CASE(3,A);
       PWM_CASE(3,B);
-      PWM_CASE(3,C);
+      #ifdef COM3C1
+        PWM_CASE(3,C);
+      #endif
     #endif
 
     #ifdef TCCR4A
@@ -782,13 +786,15 @@ static void pwm_details(uint8_t pin) {
         else if (TIMSK1 & (_BV(TOIE1) | _BV(ICIE1))) err_prob_interrupt();
         else can_be_used();
         break;
-      case TIMER1C:
-        TIMER_PREFIX(1,C,4);
-        if (WGM_TEST2) err_is_counter();
-        else if (TEST(TIMSK1, OCIE1C)) err_is_interrupt();
-        else if (TIMSK1 & (_BV(TOIE1) | _BV(ICIE1))) err_prob_interrupt();
-        else can_be_used();
-        break;
+      #if defined(COM1C1) && defined(TIMER1C)
+        case TIMER1C:
+          TIMER_PREFIX(1,C,4);
+          if (WGM_TEST2) err_is_counter();
+          else if (TEST(TIMSK1, OCIE1C)) err_is_interrupt();
+          else if (TIMSK1 & (_BV(TOIE1) | _BV(ICIE1))) err_prob_interrupt();
+          else can_be_used();
+          break;
+      #endif
     #endif
 
     #if defined(TCCR2A) && defined(COM2A1)
@@ -823,6 +829,7 @@ static void pwm_details(uint8_t pin) {
         else if (TIMSK3 & (_BV(TOIE3) | _BV(ICIE3))) err_prob_interrupt();
         else can_be_used();
         break;
+      #ifdef COM3C1
       case TIMER3C:
         TIMER_PREFIX(3,C,3);
         if (WGM_TEST2) err_is_counter();
@@ -830,6 +837,7 @@ static void pwm_details(uint8_t pin) {
         else if (TIMSK3 & (_BV(TOIE3) | _BV(ICIE3))) err_prob_interrupt();
         else can_be_used();
         break;
+      #endif
     #endif
 
     #ifdef TCCR4A
@@ -946,4 +954,3 @@ inline void report_pin_state_extended(int8_t pin, bool ignore) {
   pwm_details(pin);
   SERIAL_EOL;
 }
-
